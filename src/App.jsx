@@ -10,6 +10,10 @@ import WatchCourse from "./components/account/WatchCourse";
 import Login from "./components/pages/Login";
 import MyLearning from "./components/pages/MyLearning";
 import { Toaster } from "react-hot-toast";
+import Dashboard from "./components/account/Dashboard";
+import RequireAuth from "./components/common/RequireAuth";
+import CreateCourse from "./components/pages/account/courses/CreateCourse";
+import EditCourse from "./components/pages/account/courses/EditCourse";
 
 const App = () => {
   return (
@@ -25,6 +29,32 @@ const App = () => {
           <Route path="/course-enrolled" element={<MyLearning />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/watch-course" element={<WatchCourse />} />
+
+          <Route
+            path="/account/dashboard"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+
+          <Route
+            path="/account/courses/create"
+            element={
+              <RequireAuth>
+                <CreateCourse />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/account/courses/edit/:id"
+            element={
+              <RequireAuth>
+                <EditCourse />
+              </RequireAuth>
+            }
+          />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" reverseOrder={false} />

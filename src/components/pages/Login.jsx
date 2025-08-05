@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Layout from "../common/Layout";
 import { useForm } from "react-hook-form";
 import { API_URL } from "../common/config";
 import toast from "react-hot-toast";
+import { AuthContext } from "../context/Auth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const {
     handleSubmit,
     register,
@@ -30,14 +32,15 @@ const Login = () => {
 
       if (result.status === true || result.status === 200) {
         toast.success(result.message || "Logged in successfully");
+        const userInfo = {
+          name: result.name,
+          id: result.id,
+          token: result.token,
+        };
 
-        // Example: Save token to localStorage
-        if (result.token) {
-          localStorage.setItem("token", result.token);
-        }
-
-        // Navigate to dashboard or home
-        navigate("/");
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        login(userInfo);
+        navigate("/account/dashboard");
       } else {
         const error = result.message || "Login failed";
         setError("email", { message: error });
